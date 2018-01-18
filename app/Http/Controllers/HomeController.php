@@ -13,12 +13,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $title = "Mobly Cart";
-        $users = \App\User::all();
+        $products = \App\Product::orderBy('id', 'desc')
+            ->limit(4)
+            ->get();
 
         return view("home")
-            ->with("title", $title)
-            ->with("users", $users);
+            ->with("products", $products);
     }
 
     /**
