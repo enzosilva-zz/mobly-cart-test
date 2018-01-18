@@ -13,7 +13,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view("welcome");
+        $title = "Mobly Cart";
+        $users = \App\User::all();
+
+        return view("home")
+            ->with("title", $title)
+            ->with("users", $users);
     }
 
     /**
