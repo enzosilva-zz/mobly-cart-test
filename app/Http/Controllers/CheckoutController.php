@@ -35,8 +35,13 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        return $request->session()->push('checkout.items', $request->all());
+        foreach ($request->session()->get('checkout.products') as $product) {
+            if ($product['product_id'] == $request->input('product_id')) {
+                return $request->session()->put($product['item_qty'], ($product['item_qty'] + $request->input('item_qty')));
+            }
+        }
+
+        return $request->session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
     }
 
     /**
@@ -47,7 +52,7 @@ class CheckoutController extends Controller
      */
     public function show(Checkout $checkout)
     {
-        //
+        dd(session());
     }
 
     /**

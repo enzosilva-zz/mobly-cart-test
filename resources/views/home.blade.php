@@ -30,7 +30,11 @@
 </head>
 
 <body>
-
+    <pre>
+    @foreach (session()->get('checkout.products') as $product)
+        <?php var_dump($product) ?>
+    @endforeach
+    </pre>
     <div class="jumbotron">
         <div class="container text-center">
             <h1>Store Name</h1>
