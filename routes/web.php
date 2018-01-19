@@ -16,3 +16,5 @@ Route::get('/', 'HomeController@index');
 Route::get('/catalog/product/create', 'ProductController@create');
 
 Route::get('/catalog/product/show/{id}', 'ProductController@show');
+
+Route::post('/checkout/store', 'CheckoutController@store');

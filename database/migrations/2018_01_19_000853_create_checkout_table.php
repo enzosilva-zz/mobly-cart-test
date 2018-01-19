@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCharacteristicValuesTable extends Migration
+class CreateCheckoutTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateCharacteristicValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('characteristic_values', function (Blueprint $table) {
+        Schema::create('checkout', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('value');
-            $table->integer('characteristic_id')->unsigned();
-            $table->foreign('characteristic_id')
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('characteristics');
+                ->on('users');
+            $table->integer('items_qty');
+            $table->integer('gift_card');
+            $table->decimal('subtotal', 8, 2);
+            $table->decimal('total', 8, 2);
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ class CreateCharacteristicValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('characteristic_values');
+        Schema::dropIfExists('checkouts');
     }
 }
