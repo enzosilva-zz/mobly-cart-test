@@ -20,3 +20,9 @@ Route::get('/catalog/product/show/{id}', 'ProductController@show');
 Route::get('/checkout', 'CheckoutController@show');
 
 Route::post('/checkout/store', 'CheckoutController@store');
+
+Route::get('/login', 'LoginController@index');
+
+Route::post('/login/store', 'LoginController@store');
+
+Route::get('/login/destroy', 'LoginController@destroy');

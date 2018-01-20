@@ -35,13 +35,25 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        foreach ($request->session()->get('checkout.products') as $product) {
-            if ($product['product_id'] == $request->input('product_id')) {
-                return $request->session()->put($product['item_qty'], ($product['item_qty'] + $request->input('item_qty')));
+        if (session()->has('checkout.products')) {
+            foreach (session()->get('checkout.products') as $key => $product) {
+                if ($product['product_id'] == $request->input('product_id')) {
+                    if (session()->has("checkout.products.{$key}.item_qty")) {
+                        session()->put("checkout.products.{$key}.item_qty", ($product['item_qty'] + $request->input('item_qty')));
+
+                        session()->flash("message", "Produto adicionado com sucesso!");
+                        return back();
+                    }
+
+                    continue;
+                }
             }
         }
 
-        return $request->session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
+        session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
+
+        session()->flash("message", "Produto adicionado com sucesso!");
+        return back();
     }
 
     /**

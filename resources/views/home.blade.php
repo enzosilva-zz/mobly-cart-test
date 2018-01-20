@@ -30,11 +30,6 @@
 </head>
 
 <body>
-    <pre>
-    @foreach (session()->get('checkout.products') as $product)
-        <?php var_dump($product) ?>
-    @endforeach
-    </pre>
     <div class="jumbotron">
         <div class="container text-center">
             <h1>Store Name</h1>
@@ -45,9 +40,6 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" href="#">Logo</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
@@ -59,14 +51,32 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+                    @if (Auth::check())
+                    <li>
+                        <a href="#" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user"></span> {{auth()->user()->name}} <span class="caret"></span>
+                            <ul class="dropdown-menu" aria-labelledby="user-dropdown">
+                                <li><a href="#">My Checkouts</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/login/destroy">Logout</a></li>
+                            </ul>
+                        </a>
+                    </li>
+                    @else
+                    <li>
+                        <a href="#" id="guest-dropdown"data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Bem vindo, visitante! <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="guest-dropdown">
+                            <li><a href="/login">Login</a></li>
+                        </ul>
+                    </li>
+                    @endif
                     <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-
+    
     <div class="container">
+        @include("includes/message", ["type" => "success"])
         <div class="row">
             @foreach($products as $product)
             <form action="/checkout/store" method="post">
@@ -88,7 +98,7 @@
                         </div>
                         <div class="panel-footer">
                             <input type="number" name="item_qty" style="width: 76px;">
-                            <button type="submit" class="btn btn-primary">Comprar</button>
+                            <button type="submit" class="btn btn-primary">Buy</button>
                         </div>
                     </div>
                 </div>
