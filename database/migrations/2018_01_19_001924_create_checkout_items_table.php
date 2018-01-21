@@ -19,7 +19,8 @@ class CreateCheckoutItemsTable extends Migration
             $table->foreign('checkout_id')
                 ->references('id')
                 ->on('checkout');
-            $table->integer('product_id')
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')
                 ->references('id')
                 ->on('products');
             $table->string('name');

@@ -21,6 +21,10 @@ Route::get('/checkout', 'CheckoutController@show');
 
 Route::post('/checkout/store', 'CheckoutController@store');
 
+Route::get('/checkout/show', 'CheckoutController@show');
+
+Route::post('/cart/store', 'CartController@store');
+
 Route::get('/login', 'LoginController@index');
 
 Route::post('/login/store', 'LoginController@store');

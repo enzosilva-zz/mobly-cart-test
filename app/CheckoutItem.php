@@ -17,12 +17,23 @@ class CheckoutItem extends Model
 
     public function checkout()
     {
-    	return $this->belongsTo(\Checkout::class);
+    	return $this->belongsTo(\App\Checkout::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(\App\Product::class);
     }
 
     public function getItemsQty()
     {
     	return $this->where("checkout_id", session()->get("checkout.checkout_id"))
     		->count();
+    }
+
+    public function getCartItems()
+    {
+        return $this->where("checkout_id", session()->get("checkout.checkout_id"))
+            ->get();
     }
 }

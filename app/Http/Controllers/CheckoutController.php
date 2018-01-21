@@ -80,7 +80,12 @@ class CheckoutController extends Controller
      */
     public function show(Checkout $checkout)
     {
-        dd(session());
+        $cartItems = (new \App\CheckoutItem)->getCartItems();
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        return view("checkout")
+            ->with("cartItems", $cartItems)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**
