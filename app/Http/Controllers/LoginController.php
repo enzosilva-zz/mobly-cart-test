@@ -50,6 +50,10 @@ class LoginController extends Controller
             return back();
         }
 
+        \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+            ->update(["user_id" => auth()->user()->id]);
+
+        session()->put("checkout.user_id", auth()->user()->id);
         session()->flash("message", "Logged in with success!");
         return redirect('/');
     }
@@ -96,6 +100,7 @@ class LoginController extends Controller
     public function destroy()
     {
         auth()->logout();
+        session()->flush();
 
         return back();
     }

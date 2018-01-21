@@ -10,18 +10,31 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         /* Remove the navbar's default rounded borders and increase the bottom margin */
-        
         .navbar {
             margin-bottom: 50px;
             border-radius: 0;
         }
+
         /* Remove the jumbotron's default bottom margin */
-        
         .jumbotron {
             margin-bottom: 0;
         }
+
+        .items-qty {
+            background: #D9534F;
+            color: #ffffff;
+            height: 20px;
+            line-height: 20px;
+            border-radius: 10px;
+            padding: 0 8px;
+            position: absolute;
+            top: -5px;
+            left: 70%;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
         /* Add a gray background color and some padding to the footer */
-        
         footer {
             background-color: #f2f2f2;
             padding: 25px;
@@ -53,23 +66,24 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (Auth::check())
                     <li>
-                        <a href="#" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user"></span> {{auth()->user()->name}} <span class="caret"></span>
-                            <ul class="dropdown-menu" aria-labelledby="user-dropdown">
-                                <li><a href="#">My Checkouts</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/login/destroy">Logout</a></li>
-                            </ul>
-                        </a>
+                        <a href="#" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user"></span> {{auth()->user()->name}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="user-dropdown">
+                            <li><a href="#">My Checkouts</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/login/destroy">Logout</a></li>
+                        </ul>
                     </li>
                     @else
                     <li>
-                        <a href="#" id="guest-dropdown"data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Bem vindo, visitante! <span class="caret"></span></a>
+                        <a href="#" id="guest-dropdown"data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Welcome, guest! <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="guest-dropdown">
                             <li><a href="/login">Login</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/user/create">Create an Account</a></li>
                         </ul>
                     </li>
                     @endif
-                    <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart <span class="items-qty">{{$itemsQty}}</span></a></li>
                 </ul>
             </div>
         </div>
@@ -81,8 +95,6 @@
             @foreach($products as $product)
             <form action="/checkout/store" method="post">
                 {{csrf_field()}}
-                <input type="hidden" name="user_id" value="1">
-                <input type="hidden" name="checkout_id" value="1">
                 <input type="hidden" name="product_id" value="{{$product->id}}">
                 <input type="hidden" name="name" value="{{$product->name}}">
                 <input type="hidden" name="price" value="{{$product->price}}">

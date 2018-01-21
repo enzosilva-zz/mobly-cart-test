@@ -41,7 +41,16 @@ class CheckoutController extends Controller
                     if (session()->has("checkout.products.{$key}.item_qty")) {
                         session()->put("checkout.products.{$key}.item_qty", ($product['item_qty'] + $request->input('item_qty')));
 
-                        session()->flash("message", "Produto adicionado com sucesso!");
+                        $checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+                            ->where("product_id", $request->input("product_id"))
+                            ->first();
+
+                        $checkoutItem->update([
+                            "item_qty" => ($checkoutItem["item_qty"] + $request->input('item_qty')),
+                            "price" => (($checkoutItem["item_qty"] + $request->input('item_qty')) * $request->input("price"))
+                        ]);
+
+                        session()->flash("message", "Product added with success!");
                         return back();
                     }
 
@@ -51,8 +60,15 @@ class CheckoutController extends Controller
         }
 
         session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
+        \App\CheckoutItem::create([
+            "checkout_id" => session()->get("checkout.checkout_id"),
+            "product_id" => $request->input("product_id"),
+            "name" => $request->input("name"),
+            "item_qty" => $request->input("item_qty"),
+            "price" => $request->input("item_qty") * $request->input("price")
+        ]);
 
-        session()->flash("message", "Produto adicionado com sucesso!");
+        session()->flash("message", "Product added with success!");
         return back();
     }
 

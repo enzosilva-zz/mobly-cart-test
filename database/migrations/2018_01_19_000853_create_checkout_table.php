@@ -15,14 +15,14 @@ class CreateCheckoutTable extends Migration
     {
         Schema::create('checkout', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->integer('items_qty');
-            $table->integer('gift_card');
-            $table->decimal('subtotal', 8, 2);
-            $table->decimal('total', 8, 2);
+            $table->integer('items_qty')->default(0);
+            $table->integer('gift_card')->default(0);
+            $table->decimal('subtotal', 8, 2)->default(0);
+            $table->decimal('total', 8, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ class CreateCheckoutTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkouts');
+        Schema::dropIfExists('checkout');
     }
 }

@@ -14,15 +14,19 @@ class HomeController extends Controller
     public function index()
     {
         if (!session()->has('checkout')) {
-            session(['checkout' => ['checkout_id' => '1']]);
+            $checkout = \App\Checkout::create();
+            session(['checkout' => ['checkout_id' => $checkout->id]]);
         }
 
         $products = \App\Product::orderBy('id', 'desc')
             ->limit(4)
             ->get();
 
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
         return view("home")
-            ->with("products", $products);
+            ->with("products", $products)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**

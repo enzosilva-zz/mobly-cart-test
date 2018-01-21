@@ -23,8 +23,8 @@ class CreateCheckoutItemsTable extends Migration
                 ->references('id')
                 ->on('products');
             $table->string('name');
-            $table->integer('item_qty');
-            $table->decimal('price', 8, 2);
+            $table->integer('item_qty')->default(0);
+            $table->decimal('price', 8, 2)->default(0);
             $table->timestamps();
         });
     }
