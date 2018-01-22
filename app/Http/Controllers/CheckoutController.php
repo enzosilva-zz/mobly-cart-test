@@ -14,7 +14,17 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        //
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        if (!$itemsQty) {
+            return redirect("/");
+        }
+
+        $cartItems = (new \App\CheckoutItem)->getCartItems();
+
+        return view("checkout")
+            ->with("cartItems", $cartItems)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**
@@ -45,13 +55,7 @@ class CheckoutController extends Controller
                             ->where("product_id", $request->input("product_id"))
                             ->first();
 
-                        $checkoutItem->update([
-                            "item_qty" => ($checkoutItem["item_qty"] + $request->input('item_qty')),
-                            "price" => (($checkoutItem["item_qty"] + $request->input('item_qty')) * $request->input("price"))
-                        ]);
-
-                        session()->flash("message", "Product added with success!");
-                        return back();
+                        return $this->update($request, $checkoutItem);
                     }
 
                     continue;
@@ -80,12 +84,7 @@ class CheckoutController extends Controller
      */
     public function show(Checkout $checkout)
     {
-        $cartItems = (new \App\CheckoutItem)->getCartItems();
-        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
-
-        return view("checkout")
-            ->with("cartItems", $cartItems)
-            ->with("itemsQty", $itemsQty);
+        dd(session());
     }
 
     /**
@@ -106,9 +105,15 @@ class CheckoutController extends Controller
      * @param  \App\Checkout  $checkout
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Checkout $checkout)
+    public function update(Request $request, \App\CheckoutItem $checkoutItem)
     {
-        //
+        $checkoutItem->update([
+            "item_qty" => ($checkoutItem["item_qty"] + $request->input('item_qty')),
+            "price" => (($checkoutItem["item_qty"] + $request->input('item_qty')) * $request->input("price"))
+        ]);
+
+        session()->flash("message", "Product added with success!");
+        return back();
     }
 
     /**

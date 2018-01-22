@@ -20,7 +20,7 @@
             margin-bottom: 0;
         }
 
-        .items-qty {
+        .count-items {
             background: #D9534F;
             color: #ffffff;
             height: 20px;
@@ -85,7 +85,7 @@
                     <li>
                         <a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart
                         @if ($itemsQty)
-                            <span class="items-qty">{{$itemsQty}}</span>
+                            <span class="count-items">{{$itemsQty}}</span>
                         @endif
                         </a>
                     </li>
@@ -97,11 +97,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-7">
-            	@include("includes/message", ["type" => "success"])
-                <form action="/cart/store" method="post">
+                <div class="container">
+                    <div class="col-sm-7">
+            	       @include("includes/message", ["type" => "success"])
+                    </div>
+                </div>
+                <form action="/checkout/update" id="form-update-cart" method="post">
                 {{csrf_field()}}
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <legend>Item Name</legend>
                     </div>
                     <div class="col-sm-3">
@@ -110,18 +114,24 @@
                     <div class="col-sm-3">
                         <legend>Item Price</legend>
                     </div>
+                    <div class="col-sm-2">
+                        <legend>Actions</legend>
+                    </div>
                 </div>
                 @foreach($cartItems as $item)
-                <div class="row">
-                    <div class="col-sm-6">
+                <div class="row items">
+                    <div class="col-sm-4">
                         <p>{{$item->name}}</p>
                     </div>
                     <div class="col-sm-3">
-                        <p><input type="number" name="items[{{$item->product_id}}][item_qty]" value="{{$item->item_qty}}" ></p>
+                        <p><input type="number" id="item-qty[{{$item->product_id}}]" data-id="{{$item->product_id}}" name="items[{{$item->product_id}}][item_qty]" value="{{$item->item_qty}}" ></p>
                     </div>
                     <div class="col-sm-3">
-                        <input type="hidden" name="items[{{$item->product_id}}][item_price]" value="{{$item->product->price}}">
+                        <input type="hidden" id="item-price[{{$item->product_id}}]" data-id="{{$item->product_id}}" name="items[{{$item->product_id}}][item_price]" value="{{$item->product->price}}">
                         <p>R${{$item->price}}</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#"><span class="glyphicon glyphicon-trash" data-id="{{$item->product_id}}"></span></a>
                     </div>
                 </div>
                 <hr>
@@ -130,7 +140,26 @@
                 </form> 
             </div>
             <div class="col-sm-3 col-sm-offset-1" style="background-color: #f2f2f2; padding-bottom: 10px;">
-                <h3>Summary</h3>
+                <legend>Summary</legend>
+                <br>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <strong>Items Quantity</strong>
+                    </div>
+                    <div class="col-sm-7">
+                        <span class="items-qty"></span>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <strong>Total</strong>
+                    </div>
+                    <div class="col-sm-7">
+                        <span class="total"></span>
+                    </div>
+                </div>
+                <br>
                 <button type="submit" class="btn btn-primary btn-block">Checkout</button>
             </div>
         </div>
@@ -145,7 +174,80 @@
             <button type="button" class="btn btn-danger">Sign Up</button>
         </form>
     </footer>
-
 </body>
-
 </html>
+<script>
+    $(document).ready(function () {
+        var elems = {
+            rowItemsQty: $(document).find("input[id^='item-qty']"),
+            rowItemsTotal: $(document).find("input[id^='item-price']"),
+            rowItemsDelete: $(document).find(".glyphicon-trash"),
+            spanItemsQty: $(document).find("span.items-qty"),
+            spanTotal: $(document).find("span.total")
+        };
+
+        var init = function (elems) {
+            elems.spanItemsQty.text(
+                summaryActions.sumItemsQty(elems.rowItemsQty)
+            );
+            elems.spanTotal.text(
+                "R$" + extra.number_format(summaryActions.sumItemsTotal(elems.rowItemsTotal), 2, ".", ",")
+            );
+            elems.rowItemsDelete.each(function () {
+                $(this).on("click", function (e) {
+                    e.preventDefault();
+                    cartActions.delete($(this).data("id"));
+                });
+            });
+        };
+
+        var extra = {
+            number_format: function (number, decimalPlaces, subsSeparator, separator) {
+                return parseFloat(number).toFixed(decimalPlaces).replace(subsSeparator, separator);
+            }
+        };
+
+        var cartActions = {
+            delete: function (itemId) {
+                $.ajax({
+                    url: '/checkout/destroy',
+                    type: 'DELETE',
+                    data: {
+                        "_token": '{{csrf_token()}}',
+                        "item_id": itemId
+                    },
+                })
+                .done(function() {
+                    window.location.reload();
+                })
+                .fail(function(error) {
+                    console.log(error);
+                });
+                
+            }
+        };
+
+        var summaryActions = {
+            sumItemsQty: function (items) {
+                var qty = 0;
+                $(items).each(function () {
+                    qty += parseInt($(this).val());
+                });
+
+                return qty;
+            },
+
+            sumItemsTotal: function (items) {
+                var price = 0;
+                $(items).each(function () {
+                    var qty = $(document).find("input[id='item-qty["+ $(this).data('id') +"]']").val();
+                    price += (parseInt(qty) * parseFloat($(this).val()));
+                });
+
+                return price;
+            }
+        };
+
+        return init(elems);
+    });
+</script>

@@ -17,13 +17,15 @@ Route::get('/catalog/product/create', 'ProductController@create');
 
 Route::get('/catalog/product/show/{id}', 'ProductController@show');
 
-Route::get('/checkout', 'CheckoutController@show');
-
-Route::post('/checkout/store', 'CheckoutController@store');
+Route::get('/checkout', 'CheckoutController@index');
 
 Route::get('/checkout/show', 'CheckoutController@show');
 
-Route::post('/cart/store', 'CartController@store');
+Route::post('/checkout/store', 'CheckoutController@store');
+
+Route::post('/checkout/update', 'CheckoutItemController@update');
+
+Route::delete('/checkout/destroy', 'CheckoutItemController@destroy');
 
 Route::get('/login', 'LoginController@index');
 

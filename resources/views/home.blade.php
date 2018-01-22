@@ -80,7 +80,7 @@
                     </li>
                     @endif
                     <li>
-                        <a href="/checkout/show"><span class="glyphicon glyphicon-shopping-cart"></span> Cart
+                        <a href="/checkout"><span class="glyphicon glyphicon-shopping-cart"></span> Cart
                         @if ($itemsQty)
                             <span class="items-qty">{{$itemsQty}}</span>
                         @endif
