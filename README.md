@@ -26,6 +26,6 @@ Utilizei o próprio ```artisan serve``` para rodar a aplicação.
 * [Laravel](https://laravel.com)
 * [jQuery](https://jquery.com/)
 
-## Authors
+## Autor
 
 * **Enzo Silva** - [LinkedIn](https://www.linkedin.com/in/enzoaug)
