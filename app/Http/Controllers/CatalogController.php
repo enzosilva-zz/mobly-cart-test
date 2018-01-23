@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Checkout;
 use Illuminate\Http\Request;
 
-class CheckoutController extends Controller
+class CatalogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,21 +40,29 @@ class CheckoutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Checkout  $checkout
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Checkout $checkout)
+    public function show(Request $request)
     {
-        //
+    	$itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        $results = \App\Product::where("name", 'like', "%" . $request->input("q") . "%")
+        	->simplePaginate(3);
+
+        return view("catalog/search_result")
+            ->with("q", $request->input("q"))
+        	->with("results", $results)
+        	->with("itemsQty", $itemsQty);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Checkout  $checkout
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Checkout $checkout)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +71,10 @@ class CheckoutController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Checkout  $checkout
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, \App\CheckoutItem $checkoutItem)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +82,10 @@ class CheckoutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Checkout  $checkout
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Checkout $checkout)
+    public function destroy($id)
     {
         //
     }

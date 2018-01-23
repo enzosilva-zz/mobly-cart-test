@@ -13,19 +13,17 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/catalog/product/create', 'ProductController@create');
-
-Route::get('/catalog/product/show/{id}', 'ProductController@show');
+Route::get('/catalog/show', 'CatalogController@show');
 
 Route::get('/checkout', 'CheckoutController@index');
 
-Route::get('/checkout/show', 'CheckoutController@show');
+Route::get('/checkout/item', 'CheckoutItemController@index');
 
-Route::post('/checkout/store', 'CheckoutController@store');
+Route::post('/checkout/item/store', 'CheckoutItemController@store');
 
-Route::post('/checkout/update', 'CheckoutItemController@update');
+Route::post('/checkout/item/update', 'CheckoutItemController@update');
 
-Route::delete('/checkout/destroy', 'CheckoutItemController@destroy');
+Route::delete('/checkout/item/destroy', 'CheckoutItemController@destroy');
 
 Route::get('/login', 'LoginController@index');
 

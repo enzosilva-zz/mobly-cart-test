@@ -8,6 +8,6 @@ class CharacteristicValue extends Model
 {
     public function characteristic()
     {
-    	return $this->belongsTo(\Characteristic::class);
+    	return $this->belongsTo(\App\Characteristic::class);
     }
 }

@@ -32,7 +32,7 @@
 <body>
     <div class="jumbotron">
         <div class="container text-center">
-            <h1>Store Name</h1>
+            <h1>{{env('APP_NAME')}}</h1>
             <p>Mission, Vision & Values</p>
         </div>
     </div>
@@ -48,12 +48,12 @@
         			<legend>Login</legend>
         			<div class="form-group">
         				<label for="">Email</label>
-        				<input type="text" name="email" class="form-control" placeholder="Ex: email@example.com.br">
+        				<input type="text" name="email" class="form-control" placeholder="Ex: kwalter@example.org">
         				{{ $errors->first('email') }}
         			</div>
         			<div class="form-group">
         				<label for="">Password</label>
-        				<input type="password" name="password" class="form-control" placeholder="Password">
+        				<input type="password" name="password" class="form-control" placeholder="secret">
         				{{ $errors->first('password') }}
         			</div>
 
@@ -66,7 +66,7 @@
     <br>
 
     <footer class="container-fluid text-center">
-        <p>Store Name Copyright &copy;</p>
+        <p>{{env('APP_NAME')}} Copyright &copy;</p>
         <form class="form-inline">Get deals:
             <input type="email" class="form-control" size="50" placeholder="Email Address">
             <button type="button" class="btn btn-danger">Sign Up</button>

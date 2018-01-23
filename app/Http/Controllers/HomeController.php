@@ -13,11 +13,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (!session()->has('checkout')) {
-            $checkout = \App\Checkout::create();
-            session(['checkout' => ['checkout_id' => $checkout->id]]);
-        }
-
         $products = \App\Product::orderBy('id', 'desc')
             ->limit(4)
             ->get();

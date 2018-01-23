@@ -14,7 +14,17 @@ class CheckoutItemController extends Controller
      */
     public function index()
     {
-        //
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        if (!$itemsQty) {
+            return redirect("/");
+        }
+
+        $cartItems = (new \App\CheckoutItem)->getCartItems();
+
+        return view("checkout")
+            ->with("cartItems", $cartItems)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**
@@ -35,7 +45,35 @@ class CheckoutItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->has('checkout.products')) {
+            foreach (session()->get('checkout.products') as $key => $product) {
+                if ($product['product_id'] == $request->input('product_id')) {
+                    if (session()->has("checkout.products.{$key}.item_qty")) {
+                        session()->put("checkout.products.{$key}.item_qty", ($product['item_qty'] + $request->input('item_qty')));
+
+                        $checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+                            ->where("product_id", $request->input("product_id"))
+                            ->first();
+
+                        return $this->update($request, $checkoutItem);
+                    }
+
+                    continue;
+                }
+            }
+        }
+
+        session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
+        \App\CheckoutItem::create([
+            "checkout_id" => session()->get("checkout.checkout_id"),
+            "product_id" => $request->input("product_id"),
+            "name" => $request->input("name"),
+            "item_qty" => $request->input("item_qty"),
+            "price" => $request->input("item_qty") * $request->input("price")
+        ]);
+
+        session()->flash("message", "Product added with success!");
+        return back();
     }
 
     /**
@@ -69,28 +107,38 @@ class CheckoutItemController extends Controller
      */
     public function update(Request $request, CheckoutItem $checkoutItem)
     {
-    	$i = 0;
-        foreach ($request->get("items") as $key => $item) {
-        	$checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
-                ->where("product_id", $key)
-                ->first();
+        if ($request->get("items")) {
+        	$i = 0;
+            foreach ($request->get("items") as $key => $item) {
+            	$checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+                    ->where("product_id", $key)
+                    ->first();
 
-            $itemQty = ($item["item_qty"] - $checkoutItem["item_qty"]) + $checkoutItem["item_qty"];
-            $checkoutItem->update([
-                "item_qty" => $itemQty,
-                "price" => ($itemQty * $item["item_price"])
-            ]);
+                $itemQty = ($item["item_qty"] - $checkoutItem["item_qty"]) + $checkoutItem["item_qty"];
+                $checkoutItem->update([
+                    "item_qty" => $itemQty,
+                    "price" => ($itemQty * $item["item_price"])
+                ]);
 
-            if (session()->get("checkout.products.{$i}.product_id") == $key) {
-                if (session()->has("checkout.products.{$i}.item_qty")) {
-                    session()->put("checkout.products.{$i}.item_qty", $itemQty);
+                if (session()->get("checkout.products.{$i}.product_id") == $key) {
+                    if (session()->has("checkout.products.{$i}.item_qty")) {
+                        session()->put("checkout.products.{$i}.item_qty", $itemQty);
+                    }
                 }
+
+                $i++;
             }
 
-            $i++;
+            session()->flash("message", "Cart updated with success!");
+            return back();
         }
 
-        session()->flash("message", "Cart updated with success!");
+        $checkoutItem->update([
+            "item_qty" => ($checkoutItem["item_qty"] + $request->input('item_qty')),
+            "price" => (($checkoutItem["item_qty"] + $request->input('item_qty')) * $request->input("price"))
+        ]);
+
+        session()->flash("message", "Product added with success!");
         return back();
     }
 

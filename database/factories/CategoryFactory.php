@@ -3,8 +3,8 @@
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Checkout::class, function (Faker $faker) {
+$factory->define(App\Category::class, function (Faker $faker) {
     return [
-        //
+        'name' => ucfirst($faker->word)
     ];
 });
