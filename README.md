@@ -15,7 +15,7 @@ MySQL
 
 ### Instalação
 
-Clonar o repositório e baixar o dump da base para o banco.
+Clonar o repositório e baixar o [dump](https://github.com/enzosilva/mobly-cart-test/blob/master/dump_laravel_factory.sql) da base para o banco. Os dados foram criados através dos Factories do Laravel.
 
 ## Como rodar?
 
@@ -23,8 +23,8 @@ Utilizei o próprio ```artisan serve``` para rodar a aplicação.
 
 ## Feito com
 
-* [Laravel](https://laravel.com) - The PHP framework used
-* [jQuery](https://jquery.com/) - The Javascript lib used
+* [Laravel](https://laravel.com)
+* [jQuery](https://jquery.com/)
 
 ## Authors
 
