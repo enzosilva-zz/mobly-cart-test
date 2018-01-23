@@ -9,8 +9,8 @@ Estava em semana de entrega de projeto no trampo; e ainda não havia trabalhado 
 
 ### Pré-requisitos
 
-PHP 7
-Laravel 5.5
+PHP 7, 
+Laravel 5.5, 
 MySQL
 
 ### Instalação
