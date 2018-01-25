@@ -11,7 +11,7 @@ class Characteristic extends Model
 		return $this->belongsTo(\App\Product::class);
 	}
 
-    public function characteristicValues()
+    public function characteristicValue()
     {
     	return $this->hasMany(\App\CharacteristicValue::class);
     }

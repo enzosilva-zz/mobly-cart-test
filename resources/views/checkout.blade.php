@@ -66,7 +66,12 @@
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+            <form action="/checkout/update" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="_method" value="put">
+                <input type="hidden" name="active" value="0">
+                <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+            </form>
         </div>
     </div>
 @endsection

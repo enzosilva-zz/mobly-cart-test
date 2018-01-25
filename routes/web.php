@@ -17,6 +17,8 @@ Route::get('/catalog/show', 'CatalogController@show');
 
 Route::get('/checkout', 'CheckoutController@index');
 
+Route::put("/checkout/update", "CheckoutController@update");
+
 Route::get('/checkout/item', 'CheckoutItemController@index');
 
 Route::post('/checkout/item/store', 'CheckoutItemController@store');

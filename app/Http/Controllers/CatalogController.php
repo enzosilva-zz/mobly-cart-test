@@ -47,7 +47,7 @@ class CatalogController extends Controller
     {
     	$itemsQty = (new \App\CheckoutItem)->getItemsQty();
 
-        $results = \App\Product::where("name", 'like', "%" . $request->input("q") . "%")
+        $results = \App\Product::where("name", 'like', $request->input("q") . "%")
         	->simplePaginate(3);
 
         return view("catalog/search_result")

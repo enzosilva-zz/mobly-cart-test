@@ -10,4 +10,9 @@ class CharacteristicValue extends Model
     {
     	return $this->belongsTo(\App\Characteristic::class);
     }
+
+    public function productCharacteristicValue()
+    {
+    	return $this->hasMany(\App\ProductCharacteristicValue::class);
+    }
 }

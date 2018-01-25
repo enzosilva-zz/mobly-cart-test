@@ -14,7 +14,8 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return view("login");
+        return view("login")
+            ->with("itemsQty", 10);
     }
 
     /**
@@ -50,11 +51,23 @@ class LoginController extends Controller
             return back();
         }
 
-        \App\Checkout::where("id", session()->get("checkout.checkout_id"))
-            ->update(["user_id" => auth()->user()->id]);
+        $checkout = \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+            ->where("active", 1)
+            ->orderBy("id", "desc")
+            ->first();
+
+        if (!$checkout->user_id) {
+            \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+                ->update(["user_id" => auth()->user()->id]);
+        }
 
         session()->put("checkout.user_id", auth()->user()->id);
         session()->flash("message", "Logged in with success!");
+
+        if (session()->has("url")) {
+            return redirect(session()->get("url"));
+        }
+
         return redirect('/');
     }
 
@@ -101,6 +114,7 @@ class LoginController extends Controller
     {
         auth()->logout();
         session()->flush();
+        session()->flash("message", "Logged out with success!");
 
         return back();
     }

@@ -138,6 +138,8 @@ class CheckoutItemController extends Controller
             "price" => (($checkoutItem["item_qty"] + $request->input('item_qty')) * $request->input("price"))
         ]);
 
+        (new \App\Checkout)->updateCurrentCheckoutData();
+
         session()->flash("message", "Product added with success!");
         return back();
     }

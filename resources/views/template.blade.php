@@ -64,7 +64,7 @@
                     <li>
                         <a href="#" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user"></span> {{auth()->user()->name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="user-dropdown">
-                            <li><a href="#">My Checkouts</a></li>
+                            <li><a href="/checkout">My Checkouts</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/login/destroy">Logout</a></li>
                         </ul>

@@ -14,7 +14,15 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        //
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        $results = \App\Checkout::where("user_id", auth()->user()->id)
+            ->where("active", 0)
+            ->simplePaginate(2);
+
+        return view("my_checkouts")
+            ->with("results", $results)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**
@@ -67,9 +75,23 @@ class CheckoutController extends Controller
      * @param  \App\Checkout  $checkout
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, \App\CheckoutItem $checkoutItem)
+    public function update(Request $request, Checkout $checkout)
     {
-        //
+        if (!\Auth::check()) {
+            session()->flash("message", "Do the login first, please!");
+            session()->put("url", "/checkout/item");
+            return redirect("/login");
+        }
+
+        $checkout::where("id", session()->get("checkout.checkout_id"))
+            ->update([
+                "active" => $request->input("active")
+            ]);
+
+        session()->flash("message", "Checkout made successfully!");
+
+        session()->forget("checkout");
+        return redirect("/");
     }
 
     /**

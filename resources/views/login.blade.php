@@ -1,44 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends("template", ['itemsQty' => $itemsQty])
 
-<head>
-    <title>Store Name</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        /* Remove the navbar's default rounded borders and increase the bottom margin */
-        
-        .navbar {
-            margin-bottom: 50px;
-            border-radius: 0;
-        }
-        /* Remove the jumbotron's default bottom margin */
-        
-        .jumbotron {
-            margin-bottom: 0;
-        }
-        /* Add a gray background color and some padding to the footer */
-        
-        footer {
-            background-color: #f2f2f2;
-            padding: 25px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="jumbotron">
-        <div class="container text-center">
-            <h1>{{env('APP_NAME')}}</h1>
-            <p>Mission, Vision & Values</p>
-        </div>
-    </div>
-    <br>
-    <br>
-	
+@section("content")
 	<div class="container">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
@@ -62,17 +24,4 @@
             </div>
         </div>
     </div>
-    <br>
-    <br>
-
-    <footer class="container-fluid text-center">
-        <p>{{env('APP_NAME')}} Copyright &copy;</p>
-        <form class="form-inline">Get deals:
-            <input type="email" class="form-control" size="50" placeholder="Email Address">
-            <button type="button" class="btn btn-danger">Sign Up</button>
-        </form>
-    </footer>
-
-</body>
-
-</html>
+@endsection
