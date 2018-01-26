@@ -11,13 +11,15 @@ $(document).ready(function () {
         elems.spanItemsQty.text(
             summaryActions.sumItemsQty(elems.rowItemsQty)
         );
+
         elems.spanTotal.text(
             "R$" + extra.number_format(summaryActions.sumItemsTotal(elems.rowItemsTotal), 2, ".", ",")
         );
+
         elems.rowItemsDelete.each(function () {
             $(this).on("click", function (e) {
                 e.preventDefault();
-                cartActions.delete($(this).data("id"));
+                cartActions.delete($(this).data("id"), $(this).data("token"));
             });
         });
     };
@@ -29,12 +31,12 @@ $(document).ready(function () {
     };
 
     var cartActions = {
-        delete: function (itemId) {
+        delete: function (itemId, token) {
             $.ajax({
-                url: '/checkout/destroy',
+                url: '/checkout/item/destroy',
                 type: 'DELETE',
                 data: {
-                    "_token": '{{csrf_token()}}',
+                    "_token": token,
                     "item_id": itemId
                 },
             })

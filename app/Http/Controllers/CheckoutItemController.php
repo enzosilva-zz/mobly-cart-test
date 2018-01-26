@@ -17,6 +17,7 @@ class CheckoutItemController extends Controller
         $itemsQty = (new \App\CheckoutItem)->getItemsQty();
 
         if (!$itemsQty) {
+            session()->flash("message", "Your checkout is empty! How about you make a purchase?");
             return redirect("/");
         }
 
@@ -72,7 +73,7 @@ class CheckoutItemController extends Controller
             "price" => $request->input("item_qty") * $request->input("price")
         ]);
 
-        session()->flash("message", "Product added with success!");
+        session()->flash("message", "Product added successfully!");
         return back();
     }
 
@@ -129,7 +130,7 @@ class CheckoutItemController extends Controller
                 $i++;
             }
 
-            session()->flash("message", "Cart updated with success!");
+            session()->flash("message", "Cart updated successfully!");
             return back();
         }
 
@@ -140,7 +141,7 @@ class CheckoutItemController extends Controller
 
         (new \App\Checkout)->updateCurrentCheckoutData();
 
-        session()->flash("message", "Product added with success!");
+        session()->flash("message", "Product added successfully!");
         return back();
     }
 
@@ -158,6 +159,7 @@ class CheckoutItemController extends Controller
 
     	foreach (session()->get("checkout.products") as $key => $product) {
             if ($product['product_id'] == $request->input('item_id')) {
+                session()->flash("message", "Item removed successfully!");
                 return session()->forget("checkout.products.{$key}");
             }
         }

@@ -37,7 +37,9 @@
                     <p>R${{$item->price}}</p>
                 </div>
                 <div class="col-sm-2">
-                    <a href="#"><span class="glyphicon glyphicon-trash" data-id="{{$item->product_id}}"></span></a>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-trash" data-id="{{$item->product_id}}" data-token="{{csrf_token()}}"></span>
+                    </a>
                 </div>
             </div>
             <hr>
