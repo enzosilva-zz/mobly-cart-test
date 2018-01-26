@@ -51,7 +51,7 @@ class CheckoutItemController extends Controller
                     if (session()->has("checkout.products.{$key}.item_qty")) {
                         session()->put("checkout.products.{$key}.item_qty", ($product['item_qty'] + $request->input('item_qty')));
 
-                        $checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+                        $checkoutItem = \App\CheckoutItem::where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
                             ->where("product_id", $request->input("product_id"))
                             ->first();
 
@@ -65,7 +65,7 @@ class CheckoutItemController extends Controller
 
         session()->push('checkout.products', $request->only(['product_id', 'name', 'price', 'item_qty']));
         \App\CheckoutItem::create([
-            "checkout_id" => session()->get("checkout.checkout_id"),
+            "checkout_id" => (new \App\Checkout)->getCurrentCheckoutId(),
             "product_id" => $request->input("product_id"),
             "name" => $request->input("name"),
             "item_qty" => $request->input("item_qty"),
@@ -110,7 +110,7 @@ class CheckoutItemController extends Controller
         if ($request->get("items")) {
         	$i = 0;
             foreach ($request->get("items") as $key => $item) {
-            	$checkoutItem = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+            	$checkoutItem = \App\CheckoutItem::where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
                     ->where("product_id", $key)
                     ->first();
 
@@ -152,7 +152,7 @@ class CheckoutItemController extends Controller
      */
     public function destroy(Request $request, CheckoutItem $checkoutItem)
     {
-    	$checkoutItem->where("checkout_id", session()->get("checkout.checkout_id"))
+    	$checkoutItem->where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
     		->where("product_id", $request->input("item_id"))
     		->delete();
 

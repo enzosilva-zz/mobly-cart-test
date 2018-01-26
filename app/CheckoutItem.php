@@ -25,15 +25,14 @@ class CheckoutItem extends Model
         return $this->belongsTo(\App\Product::class);
     }
 
-    public function getItemsQty()
-    {
-    	return $this->where("checkout_id", session()->get("checkout.checkout_id"))
-    		->count();
-    }
-
     public function getCartItems()
     {
-        return $this->where("checkout_id", session()->get("checkout.checkout_id"))
+        return $this->where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
             ->get();
+    }
+
+    public function getItemsQty()
+    {
+    	return count($this->getCartItems());
     }
 }

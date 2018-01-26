@@ -83,8 +83,9 @@ class CheckoutController extends Controller
             return redirect("/login");
         }
 
-        $checkout::where("id", session()->get("checkout.checkout_id"))
+        $checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
             ->update([
+                "user_id" => auth()->user()->id,
                 "active" => $request->input("active")
             ]);
 

@@ -21,7 +21,7 @@ class HomeController extends Controller
             session(['checkout' => ['checkout_id' => $checkout->id]]);
         }
 
-        $checkoutItems = \App\CheckoutItem::where("checkout_id", session()->get("checkout.checkout_id"))
+        $checkoutItems = \App\CheckoutItem::where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
             ->get();
 
         $itemsQty = 0;
@@ -31,7 +31,7 @@ class HomeController extends Controller
             $itemsPrice += $checkoutItem->price;
         }
 
-        \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+        \App\Checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
             ->update([
                 "items_qty" => $itemsQty,
                 "subtotal" => $itemsPrice,

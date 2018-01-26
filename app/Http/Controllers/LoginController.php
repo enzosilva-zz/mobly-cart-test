@@ -51,7 +51,7 @@ class LoginController extends Controller
             return back();
         }
 
-        $checkout = \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+        $checkout = \App\Checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
             ->where("active", 1)
             ->orderBy("id", "desc")
             ->first();
@@ -116,6 +116,6 @@ class LoginController extends Controller
         session()->flush();
         session()->flash("message", "Logged out with success!");
 
-        return back();
+        return redirect("/");
     }
 }
