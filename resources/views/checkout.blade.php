@@ -27,7 +27,7 @@
             @foreach($cartItems as $item)
             <div class="row items">
                 <div class="col-sm-4">
-                    <p>{{$item->name}}</p>
+                    <p><a href="/catalog/product/{{$item->product->id}}/detail">{{$item->name}}</a></p>
                 </div>
                 <div class="col-sm-3">
                     <p><input type="number" id="item-qty[{{$item->product_id}}]" data-id="{{$item->product_id}}" name="items[{{$item->product_id}}][item_qty]" value="{{$item->item_qty}}" ></p>

@@ -14,8 +14,10 @@ class LoginController extends Controller
      */
     public function index()
     {
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
         return view("login")
-            ->with("itemsQty", 10);
+            ->with("itemsQty", $itemsQty);
     }
 
     /**

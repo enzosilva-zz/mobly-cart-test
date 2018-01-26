@@ -11,7 +11,9 @@
             <input type="hidden" name="price" value="{{$product->price}}">
             <div class="col-sm-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{$product->name}}</div>
+                    <div class="panel-heading">
+                        <a href="/catalog/product/{{$product->id}}/detail">{{$product->name}}</a>
+                    </div>
                     <div class="panel-body">
                         <img src="{{$product->image}}" class="img-responsive" style="width:100%" alt="Image">
                     </div>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+    	$itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        return view("user_create")
+        	->with("itemsQty", $itemsQty);
     }
 
     /**
@@ -34,7 +37,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    	$request->validate([
+            "name" => "required",
+            "email" => "required|email",
+            "password" => "required"
+        ]);
+
+        $user = \App\User::create($request->all());
+
+        if ($user) {
+        	\Auth::loginUsingId($user->id);
+
+        	$checkout = \App\Checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
+	            ->where("active", 1)
+	            ->orderBy("id", "desc")
+	            ->first();
+
+	        if (!$checkout->user_id) {
+	            \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+	                ->update(["user_id" => auth()->user()->id]);
+	        }
+	        
+        	session()->flash("message", "Registered successfully!");
+        	return redirect("/");
+        }
+
+        session()->flash("message", "Could not register!");
+        return redirect("/");
     }
 
     /**
@@ -45,14 +74,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = \App\Product::where("id", $id)
-            ->first();
-
-        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
-
-        return view("catalog/product_detail")
-            ->with("product", $product)
-            ->with("itemsQty", $itemsQty);
+        //
     }
 
     /**

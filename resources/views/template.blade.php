@@ -75,7 +75,7 @@
                         <ul class="dropdown-menu" aria-labelledby="guest-dropdown">
                             <li><a href="/login">Login</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">Create an Account</a></li>
+                            <li><a href="/user/create">Create an Account</a></li>
                         </ul>
                     </li>
                     @endif

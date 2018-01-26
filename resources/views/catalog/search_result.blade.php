@@ -10,7 +10,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><strong>{{$result->name}}</strong> - <span class="price">R${{$result->price}}</span></div>
+                    <div class="panel-heading">
+                        <a href="/catalog/product/{{$result->id}}/detail">{{$result->name}}</a> - <span class="price">R${{$result->price}}</span>
+                    </div>
                 </div>
             </div>
         </div>
