@@ -38,7 +38,7 @@ class HomeController extends Controller
                 "total" => $itemsPrice,
             ]);
 
-        $products = \App\Product::orderBy('id', 'desc')
+        $products = \App\Product::inRandomOrder()
             ->limit(4)
             ->get();
 

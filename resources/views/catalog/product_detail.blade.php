@@ -34,11 +34,7 @@
 								<strong>Characteristic(s): </strong>
 								@foreach ($product->characteristic as $key => $characteristic)
 		                            <ul><strong>{{$characteristic->name}}</strong>
-		                            @foreach ($characteristic->characteristicValue as $characteristicValue)
-		                                @foreach ($characteristicValue->productCharacteristicValue as $productCharacteristicValue)
-		                                    <li>{{$productCharacteristicValue->characteristicValue->value}}</li>
-		                                @endforeach
-		                            @endforeach
+		                            	<li>{{$characteristic->characteristicValue[0]->value}}</li>
 		                            </ul>
 		                        @endforeach
 							</li>

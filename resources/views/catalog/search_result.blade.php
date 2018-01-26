@@ -25,19 +25,15 @@
             <div class="col-sm-9">
                 <div class="panel-body">
                     <p><strong>Description: </strong>{{$result->description}}</p>
-                    <p><strong>Categories: </strong>
+                    <p><strong>Category(ies): </strong>
                         @foreach ($result->category as $key => $category)
                             {{$category->name}}{{(count($result->category) != ($key + 1)) ? ", " : ""}}
                         @endforeach
                     </p>
-                    <p><strong>Characteristics: </strong>
+                    <p><strong>Characteristic(s): </strong>
                         @foreach ($result->characteristic as $key => $characteristic)
                             <ul><strong>{{$characteristic->name}}</strong>
-                            @foreach ($characteristic->characteristicValue as $characteristicValue)
-                                @foreach ($characteristicValue->productCharacteristicValue as $productCharacteristicValue)
-                                    <li>{{$productCharacteristicValue->characteristicValue->value}}</li>
-                                @endforeach
-                            @endforeach
+                                <li>{{$characteristic->characteristicValue[0]->value}}</li>
                             </ul>
                         @endforeach
                     </p>
