@@ -13,9 +13,17 @@
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/user/create', 'UserController@create');
+
+Route::post('/user/store', 'UserController@store');
+
 Route::get('/catalog/show', 'CatalogController@show');
 
+Route::get('/catalog/product/{id}/detail', 'ProductController@show');
+
 Route::get('/checkout', 'CheckoutController@index');
+
+Route::put("/checkout/update", "CheckoutController@update");
 
 Route::get('/checkout/item', 'CheckoutItemController@index');
 

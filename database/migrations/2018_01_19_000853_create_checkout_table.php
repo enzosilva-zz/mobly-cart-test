@@ -23,6 +23,7 @@ class CreateCheckoutTable extends Migration
             $table->integer('gift_card')->default(0);
             $table->decimal('subtotal', 8, 2)->default(0);
             $table->decimal('total', 8, 2)->default(0);
+            $table->integer('active')->unsigned()->default(1);
             $table->timestamps();
         });
     }

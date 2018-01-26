@@ -23,7 +23,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view("catalog/product/create");
+        //
     }
 
     /**
@@ -45,7 +45,14 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        dd($id);
+        $product = \App\Product::where("id", $id)
+            ->first();
+
+        $itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        return view("catalog/product_detail")
+            ->with("product", $product)
+            ->with("itemsQty", $itemsQty);
     }
 
     /**

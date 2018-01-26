@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CatalogController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,10 @@ class CatalogController extends Controller
      */
     public function create()
     {
-        //
+    	$itemsQty = (new \App\CheckoutItem)->getItemsQty();
+
+        return view("user_create")
+        	->with("itemsQty", $itemsQty);
     }
 
     /**
@@ -34,26 +37,44 @@ class CatalogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    	$request->validate([
+            "name" => "required",
+            "email" => "required|email",
+            "password" => "required"
+        ]);
+
+        $user = \App\User::create($request->all());
+
+        if ($user) {
+        	\Auth::loginUsingId($user->id);
+
+        	$checkout = \App\Checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
+	            ->where("active", 1)
+	            ->orderBy("id", "desc")
+	            ->first();
+
+	        if (!$checkout->user_id) {
+	            \App\Checkout::where("id", session()->get("checkout.checkout_id"))
+	                ->update(["user_id" => auth()->user()->id]);
+	        }
+	        
+        	session()->flash("message", "Registered successfully!");
+        	return redirect("/");
+        }
+
+        session()->flash("message", "Could not register!");
+        return redirect("/");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
-    	$itemsQty = (new \App\CheckoutItem)->getItemsQty();
-
-        $results = \App\Product::where("name", 'like', $request->input("q") . "%")
-        	->simplePaginate(3);
-
-        return view("catalog/search_result")
-            ->with("q", $request->input("q"))
-        	->with("results", $results)
-        	->with("itemsQty", $itemsQty);
+        //
     }
 
     /**

@@ -27,7 +27,7 @@
             @foreach($cartItems as $item)
             <div class="row items">
                 <div class="col-sm-4">
-                    <p>{{$item->name}}</p>
+                    <p><a href="/catalog/product/{{$item->product->id}}/detail">{{$item->name}}</a></p>
                 </div>
                 <div class="col-sm-3">
                     <p><input type="number" id="item-qty[{{$item->product_id}}]" data-id="{{$item->product_id}}" name="items[{{$item->product_id}}][item_qty]" value="{{$item->item_qty}}" ></p>
@@ -37,7 +37,9 @@
                     <p>R${{$item->price}}</p>
                 </div>
                 <div class="col-sm-2">
-                    <a href="#"><span class="glyphicon glyphicon-trash" data-id="{{$item->product_id}}"></span></a>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-trash" data-id="{{$item->product_id}}" data-token="{{csrf_token()}}"></span>
+                    </a>
                 </div>
             </div>
             <hr>
@@ -66,7 +68,12 @@
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+            <form action="/checkout/update" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="_method" value="put">
+                <input type="hidden" name="active" value="0">
+                <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+            </form>
         </div>
     </div>
 @endsection

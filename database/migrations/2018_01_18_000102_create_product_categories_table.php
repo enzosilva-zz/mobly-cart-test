@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductCharacteristicsTable extends Migration
+class CreateProductCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateProductCharacteristicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_characteristics', function (Blueprint $table) {
+        Schema::create('product_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned();
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products');
-            $table->integer('characteristic_value_id')
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')
                 ->references('id')
-                ->on('characteristic_values');
+                ->on('categories');
             $table->timestamps();
         });
     }

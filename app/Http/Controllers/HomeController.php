@@ -13,7 +13,32 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = \App\Product::orderBy('id', 'desc')
+        if (!session()->has("checkout")) {
+            $checkout = \App\Checkout::create([
+                "user_id" => (isset(auth()->user()->id)) ? auth()->user()->id : null
+            ]);
+
+            session(['checkout' => ['checkout_id' => $checkout->id]]);
+        }
+
+        $checkoutItems = \App\CheckoutItem::where("checkout_id", (new \App\Checkout)->getCurrentCheckoutId())
+            ->get();
+
+        $itemsQty = 0;
+        $itemsPrice = 0;
+        foreach ($checkoutItems as $checkoutItem) {
+            $itemsQty += $checkoutItem->item_qty;
+            $itemsPrice += $checkoutItem->price;
+        }
+
+        \App\Checkout::where("id", (new \App\Checkout)->getCurrentCheckoutId())
+            ->update([
+                "items_qty" => $itemsQty,
+                "subtotal" => $itemsPrice,
+                "total" => $itemsPrice,
+            ]);
+
+        $products = \App\Product::inRandomOrder()
             ->limit(4)
             ->get();
 

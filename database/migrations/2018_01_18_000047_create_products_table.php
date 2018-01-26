@@ -19,10 +19,6 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->decimal('price', 8, 2);
-            $table->integer('category_id')->unsigned()->nullable();
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('categories');
             $table->timestamps();
         });
     }
