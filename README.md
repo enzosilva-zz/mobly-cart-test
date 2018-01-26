@@ -4,8 +4,7 @@ Mobly Cart Test
 
 ## Resumo
 
-Infelizmente não tive tempo de realizar um teste bacana! Ficaram faltando algumas features. 
-Estava em semana de entrega de projeto no trampo; e ainda não havia trabalhado com o Laravel.
+* Me sobraram algumas dúvidas, principalmente em relação ao `Many to Many` (que é quase sempre uma dúvida cruel nos ORMs (rs)) que deve ser implementado nas `características` dos produtos (esta parte não está muito clara no descritivo do teste enviado por _email_).
 
 ### Pré-requisitos
 
