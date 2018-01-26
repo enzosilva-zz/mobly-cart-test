@@ -15,7 +15,8 @@ MySQL
 
 ### Instalação
 
-Clonar o repositório e baixar o [dump](https://github.com/enzosilva/mobly-cart-test/blob/master/dump_laravel_factory.sql) da base para o banco. Os dados foram criados através dos Factories do Laravel.
+* Clonar o repositório e baixar o [dump](https://github.com/enzosilva/mobly-cart-test/blob/master/dump.sql) da base para o banco. Os dados foram criados através dos Factories do Laravel.
+* Rodar um ```composer install``` para instalar as dependências do Laravel (pois a pasta `vendor` não é versionada).
 
 ## Como rodar?
 
